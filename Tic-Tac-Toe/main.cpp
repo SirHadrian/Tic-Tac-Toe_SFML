@@ -7,6 +7,7 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Tic Tac Toe", sf::Style::Close);
 
 	Board* board = new Board();
+	bool game_over = false;
 
 	int player = X;
 
@@ -20,7 +21,7 @@ int main()
 			if (event.type == sf::Event::Closed)
 				window.close();
 
-			if (event.type == sf::Event::MouseButtonPressed)
+			if (event.type == sf::Event::MouseButtonPressed && game_over==false)
 			{
 				sf::Vector2f pos(sf::Mouse::getPosition(window));
 
@@ -40,6 +41,11 @@ int main()
 
 		board->draw_lines(window);
 		board->draw_shapes(window);
+
+		if (board->win_check(window, player))
+		{
+			game_over = true;
+		}
 
 		window.display();
 	}

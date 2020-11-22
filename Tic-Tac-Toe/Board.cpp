@@ -82,12 +82,49 @@ bool Board::set_X(const int& row, const int& col)
 	return false;
 }
 
-void Board::draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col)
+bool Board::win_check(sf::RenderWindow& window, const int& player) const
+{
+	//COLS/vertical check
+	for (unsigned int col = 0; col < COLS; ++col)
+	{
+		if (board[0][col] == player && board[1][col] == player && board[2][col] == player)
+		{
+			draw_vertical_win_line(window, player, col);
+			return true;
+		}
+	}
+	//ROWS/horizontal check
+	for (unsigned int row = 0; row < ROWS; ++row)
+	{
+		if (board[row][0] == player && board[row][1] == player && board[row][2] == player)
+		{
+			draw_horizontal_win_line(window, player, row);
+			return true;
+		}
+	}
+	//diagonal_1 check
+	if (board[0][0] == player && board[1][1] == player && board[2][2] == player)
+	{
+		draw_diagonal_win_line_1(window, player);
+		return true;
+	}
+	//diagonal_2 check
+	if (board[0][2] == player && board[1][1] == player && board[2][0] == player)
+	{
+		draw_diagonal_win_line_2(window, player);
+		return true;
+	}
+
+	return false;
+}
+
+void Board::draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col)const
 {
 	sf::RectangleShape win_line(sf::Vector2f(HEIGHT - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
 	win_line.rotate(90.f);
 	float x = (float)(col * SQUARE_SIZE + SQUARE_SIZE / 2);
-	win_line.setPosition(sf::Vector2f(x, x - WIN_LINES_EXPAND));
+	float y = SQUARE_SIZE / 2;
+	win_line.setPosition(sf::Vector2f(x, y - WIN_LINES_EXPAND));
 	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
 
 	if (player == X)
@@ -98,7 +135,7 @@ void Board::draw_vertical_win_line(sf::RenderWindow& window, const int& player, 
 	window.draw(win_line);
 }
 
-void Board::draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row)
+void Board::draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row)const
 {
 	sf::RectangleShape win_line(sf::Vector2f(WIDTH - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
 
@@ -114,7 +151,7 @@ void Board::draw_horizontal_win_line(sf::RenderWindow& window, const int& player
 	window.draw(win_line);
 }
 
-void Board::draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player)
+void Board::draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player)const
 {
 	sf::RectangleShape win_line(sf::Vector2f(WIDTH + SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
 	float x = (float)(SQUARE_SIZE / 2);
@@ -130,7 +167,7 @@ void Board::draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player
 	window.draw(win_line);
 }
 
-void Board::draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player)
+void Board::draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player)const
 {
 	sf::RectangleShape win_line(sf::Vector2f(WIDTH + SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
 	float x = (float)(WIDTH - SQUARE_SIZE / 2);

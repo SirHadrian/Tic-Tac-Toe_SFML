@@ -14,6 +14,7 @@ public:
 	void draw_shapes(sf::RenderWindow& window);
 	bool set_O(const int& row, const int& col);
 	bool set_X(const int& row, const int& col);
+	bool win_check(sf::RenderWindow& window, const int& player)const;
 
 private:
 	int** board;
@@ -31,9 +32,9 @@ private:
 	void draw_o(sf::RenderWindow& window, const int& row, const int& col);
 	void init_x_o();
 	void init_lines();
-	void draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col);
-	void draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row);
-	void draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player);
-	void draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player);
+	void draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col)const;
+	void draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row)const;
+	void draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player)const;
+	void draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player)const;
 };
 

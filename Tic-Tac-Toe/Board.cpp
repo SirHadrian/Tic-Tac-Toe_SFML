@@ -9,9 +9,6 @@ Board::Board()
 	init_board(board);
 	init_lines();
 	init_x_o();
-	board[2][2] = 1;
-	board[0][0] = 1;
-	board[1][2] = 2;
 }
 
 Board::~Board()
@@ -53,16 +50,100 @@ void Board::draw_shapes(sf::RenderWindow& window)
 	{
 		for (unsigned col = 0; col < COLS; ++col)
 		{
-			if (board[row][col] == 2)
-			{
-				draw_x(window, row, col);
-			}
-			else if (board[row][col] == 1)
+			if (board[row][col] == O)
 			{
 				draw_o(window, row, col);
 			}
+			else if (board[row][col] == X)
+			{
+				draw_x(window, row, col);
+			}
 		}
 	}
+}
+
+bool Board::set_O(const int& row, const int& col)
+{
+	if (board[row][col] == Free)
+	{
+		board[row][col] = O;
+		return true;
+	}
+	return false;
+}
+
+bool Board::set_X(const int& row, const int& col)
+{
+	if (board[row][col] == Free)
+	{
+		board[row][col] = X;
+		return true;
+	}
+	return false;
+}
+
+void Board::draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col)
+{
+	sf::RectangleShape win_line(sf::Vector2f(HEIGHT - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
+	win_line.rotate(90.f);
+	float x = (float)(col * SQUARE_SIZE + SQUARE_SIZE / 2);
+	win_line.setPosition(sf::Vector2f(x, x - WIN_LINES_EXPAND));
+	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
+
+	if (player == X)
+		win_line.setFillColor(X_COLOR);
+	else
+		win_line.setFillColor(O_COLOR);
+
+	window.draw(win_line);
+}
+
+void Board::draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row)
+{
+	sf::RectangleShape win_line(sf::Vector2f(WIDTH - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
+
+	float y = (float)(row * SQUARE_SIZE + SQUARE_SIZE / 2);
+	win_line.setPosition(sf::Vector2f(y - WIN_LINES_EXPAND, y));
+	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
+
+	if (player == X)
+		win_line.setFillColor(X_COLOR);
+	else
+		win_line.setFillColor(O_COLOR);
+
+	window.draw(win_line);
+}
+
+void Board::draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player)
+{
+	sf::RectangleShape win_line(sf::Vector2f(WIDTH + SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
+	float x = (float)(SQUARE_SIZE / 2);
+	win_line.setPosition(sf::Vector2f(x - WIN_LINES_EXPAND, x - WIN_LINES_EXPAND));
+	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
+	win_line.rotate(45.f);
+
+	if (player == X)
+		win_line.setFillColor(X_COLOR);
+	else
+		win_line.setFillColor(O_COLOR);
+
+	window.draw(win_line);
+}
+
+void Board::draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player)
+{
+	sf::RectangleShape win_line(sf::Vector2f(WIDTH + SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
+	float x = (float)(WIDTH - SQUARE_SIZE / 2);
+	win_line.setPosition(sf::Vector2f(x + WIN_LINES_EXPAND, SQUARE_SIZE / 2 - WIN_LINES_EXPAND));
+	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
+	win_line.rotate(135.f);
+
+	if (player == X)
+		win_line.setFillColor(X_COLOR);
+	else
+		win_line.setFillColor(O_COLOR);
+
+	window.draw(win_line);
 }
 
 void Board::init_board(int** board)
@@ -71,7 +152,7 @@ void Board::init_board(int** board)
 	{
 		for (unsigned int col = 0; col < COLS; ++col)
 		{
-			board[row][col] = 0;
+			board[row][col] = Free;
 		}
 	}
 }
@@ -105,10 +186,6 @@ void Board::init_x_o()
 	line_1_x.setSize(sf::Vector2f(X_LINE_LENGHT, X_LINE_THICKNESS));
 	line_2_x.setSize(sf::Vector2f(X_LINE_LENGHT, X_LINE_THICKNESS));
 
-	//Lines position
-	//line_1_x.setPosition(sf::Vector2f(450.f, 300.f));
-	//line_2_x.setPosition(sf::Vector2f(450.f, 300.f));
-
 	//Lines origin point
 	line_1_x.setOrigin(line_1_x.getSize().x / 2, line_1_x.getSize().y / 2);
 	line_2_x.setOrigin(line_2_x.getSize().x / 2, line_2_x.getSize().y / 2);
@@ -118,8 +195,8 @@ void Board::init_x_o()
 	line_2_x.rotate(135.f);
 
 	//Lines color
-	line_1_x.setFillColor(sf::Color::Red);
-	line_2_x.setFillColor(sf::Color::Red);
+	line_1_x.setFillColor(X_COLOR);
+	line_2_x.setFillColor(X_COLOR);
 
 
 	//INIT O
@@ -129,7 +206,7 @@ void Board::init_x_o()
 
 	//Circle outline color/thickness
 	circle.setOutlineThickness(OUTLINE_THICKNESS);
-	circle.setOutlineColor(CIRCLE_COLOR);
+	circle.setOutlineColor(O_COLOR);
 
 	//Circle fill color
 	circle.setFillColor(BG_COLOR);
@@ -144,12 +221,12 @@ void Board::init_lines()
 	line_1.setSize(sf::Vector2f(HEIGHT, BOARD_LINE_WIDTH));
 	line_1.setFillColor(LINE_COLOR);
 	line_1.setPosition(sf::Vector2f(SQUARE_SIZE, 0));
-	line_1.rotate(90);
+	line_1.rotate(90.f);
 
 	line_2.setSize(sf::Vector2f(HEIGHT, BOARD_LINE_WIDTH));
 	line_2.setFillColor(LINE_COLOR);
 	line_2.setPosition(sf::Vector2f(SQUARE_SIZE * 2, 0));
-	line_2.rotate(90);
+	line_2.rotate(90.f);
 
 	line_3.setSize(sf::Vector2f(WIDTH, BOARD_LINE_WIDTH));
 	line_3.setFillColor(LINE_COLOR);

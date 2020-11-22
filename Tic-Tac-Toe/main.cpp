@@ -1,10 +1,12 @@
 #include <SFML/Graphics.hpp>
+#include "constants.h"
+#include "Board.h"
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(800, 800), "SFML works!");
+	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Tic Tac Toe", sf::Style::Close);
 
-	sf::RectangleShape line1(sf::Vector2f(100.f, 5.f));
+	/*sf::RectangleShape line1(sf::Vector2f(100.f, 5.f));
 	sf::RectangleShape line2(sf::Vector2f(100.f, 5.f));
 
 	sf::CircleShape circle(40.f);
@@ -23,14 +25,17 @@ int main()
 	line2.rotate(135.f);
 
 	line1.setFillColor(sf::Color::Red);
-	line2.setFillColor(sf::Color::Red);
+	line2.setFillColor(sf::Color::Red);*/
+	Board* board = new Board();
+	board->print_board(board->get_board());
+	
 
-
+	
 
 
 	while (window.isOpen())
 	{
-		window.clear();
+		window.clear(BG_COLOR);
 
 		sf::Event event;
 		while (window.pollEvent(event))
@@ -40,13 +45,14 @@ int main()
 		}
 
 
-		
-		window.draw(circle);
+		board->draw_lines(window);
+		/*window.draw(circle);
 		window.draw(line1);
-		window.draw(line2);
+		window.draw(line2);*/
 	
 		window.display();
 	}
+	delete board;
 
 	return EXIT_SUCCESS;
 }

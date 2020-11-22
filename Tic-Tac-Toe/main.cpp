@@ -6,33 +6,9 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Tic Tac Toe", sf::Style::Close);
 
-	/*sf::RectangleShape line1(sf::Vector2f(100.f, 5.f));
-	sf::RectangleShape line2(sf::Vector2f(100.f, 5.f));
-
-	sf::CircleShape circle(40.f);
-	circle.setOutlineThickness(5);
-	circle.setFillColor(sf::Color::Black);
-	circle.setOutlineColor(sf::Color::Green);
-
-	line1.setPosition(sf::Vector2f(450.f, 300.f));
-	line2.setPosition(sf::Vector2f(450.f, 300.f));
-
-	line1.setOrigin(line1.getSize().x / 2, line1.getSize().y / 2);
-	line2.setOrigin(line2.getSize().x / 2, line2.getSize().y / 2);
-
-
-	line1.rotate(45.f);
-	line2.rotate(135.f);
-
-	line1.setFillColor(sf::Color::Red);
-	line2.setFillColor(sf::Color::Red);*/
 	Board* board = new Board();
 	board->print_board(board->get_board());
 	
-
-	
-
-
 	while (window.isOpen())
 	{
 		window.clear(BG_COLOR);
@@ -46,9 +22,7 @@ int main()
 
 
 		board->draw_lines(window);
-		/*window.draw(circle);
-		window.draw(line1);
-		window.draw(line2);*/
+		board->draw_shapes(window);
 	
 		window.display();
 	}

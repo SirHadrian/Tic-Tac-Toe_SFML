@@ -2,16 +2,18 @@
 #include <SFML/Graphics/Color.hpp>
 
 //Window
-const int WIDTH = 600;
-const int HEIGHT = 600;
+const unsigned int WIDTH = 600;
+const unsigned int HEIGHT = 600;
 
 //Board
-const int ROWS = 3;
-const int COLS = 3;
+const unsigned int ROWS = 3;
+const unsigned int COLS = 3;
 const int SQUARE_SIZE = 200;
-const float CIRCLE_RADIUS = 40.f;
-const int OUTLINE_THICKNESS = 5;
-const float LINE_WIDTH = 15.f;
+const float CIRCLE_RADIUS = 54.f;
+const float OUTLINE_THICKNESS = 10.f;
+const float BOARD_LINE_WIDTH = 16.f;
+const float X_LINE_LENGHT = 150.f;
+const float X_LINE_THICKNESS = 10.f;
 
 //Colors
 const sf::Color BG_COLOR(42, 37, 44, 255);

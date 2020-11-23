@@ -4,13 +4,15 @@
 
 int main()
 {
+	//Window settings
 	sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), "Tic Tac Toe", sf::Style::Close);
 	window.setFramerateLimit(60);
 
+	//Board
 	Board* board = new Board();
 	bool game_over = false;
-
 	int player = X;
+
 
 	while (window.isOpen())
 	{
@@ -34,9 +36,12 @@ int main()
 				else {
 					if (board->set_O(row, col)) { player = X; }
 				}
+			}
 
-				board->print_board(board->get_board());
-				std::cout << "Player: " << player << std::endl;
+			if (event.key.code == sf::Keyboard::R)
+			{
+				board->reset_board(board->get_board());
+				game_over = false;
 			}
 		}
 
@@ -48,6 +53,17 @@ int main()
 		if (board->win_check(window, (player % 2) + 1))
 		{
 			game_over = true;
+
+			if ((player % 2) + 1 == 1)
+			{
+				board->text.setString("X has won");
+			}
+			else {
+				board->text.setString("O has won");
+			}
+
+			window.draw(board->text);
+			window.draw(board->reset);
 		}
 
 		window.display();

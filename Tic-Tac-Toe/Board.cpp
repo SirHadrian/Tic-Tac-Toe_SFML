@@ -9,6 +9,7 @@ Board::Board()
 	init_board(board);
 	init_lines();
 	init_x_o();
+	init_text();
 }
 
 Board::~Board()
@@ -118,6 +119,11 @@ bool Board::win_check(sf::RenderWindow& window, const int& player) const
 	return false;
 }
 
+void Board::reset_board(int** board)
+{
+	init_board(board);
+}
+
 void Board::draw_vertical_win_line(sf::RenderWindow& window, const int& player, const int& col)const
 {
 	sf::RectangleShape win_line(sf::Vector2f(HEIGHT - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
@@ -182,6 +188,32 @@ void Board::draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player
 		win_line.setFillColor(O_COLOR);
 
 	window.draw(win_line);
+}
+
+void Board::init_text()
+{
+	//Font
+	if (!font.loadFromFile("batmfa__.ttf"))
+	{
+		throw std::runtime_error("Could not load font from file");
+	}
+
+	//Text
+	text.setFont(font);
+	text.setCharacterSize(FONT_SIZE);
+	text.setFillColor(WIN_TEXT_COLOR);
+	text.setOutlineColor(WIN_TEXT_COLOR_OUTLINE);
+	text.setOutlineThickness(4.f);
+	text.setPosition(sf::Vector2f((float)(WIDTH / 2 - 200), (float)(HEIGHT) / 2 - 70));
+
+
+	reset.setFont(font);
+	reset.setCharacterSize(FONT_SIZE - 40);
+	reset.setFillColor(RESET_TEXT_COLOR);
+	reset.setOutlineColor(WIN_TEXT_COLOR_OUTLINE);
+	reset.setOutlineThickness(4.f);
+	reset.setPosition(sf::Vector2f((float)(WIDTH / 2 - 132), (float)(HEIGHT - 40)));
+	reset.setString("press R to reset");
 }
 
 void Board::init_board(int** board)

@@ -15,6 +15,11 @@ public:
 	bool set_O(const int& row, const int& col);
 	bool set_X(const int& row, const int& col);
 	bool win_check(sf::RenderWindow& window, const int& player)const;
+	void reset_board(int** board);
+
+public:
+	sf::Text reset;
+	sf::Text text;
 
 private:
 	int** board;
@@ -25,6 +30,7 @@ private:
 	sf::RectangleShape line_1_x;
 	sf::RectangleShape line_2_x;
 	sf::CircleShape circle;
+	sf::Font font;
 
 private:
 	void init_board(int** board);
@@ -36,5 +42,6 @@ private:
 	void draw_horizontal_win_line(sf::RenderWindow& window, const int& player, const int& row)const;
 	void draw_diagonal_win_line_1(sf::RenderWindow& window, const int& player)const;
 	void draw_diagonal_win_line_2(sf::RenderWindow& window, const int& player)const;
+	void init_text();
 };
 

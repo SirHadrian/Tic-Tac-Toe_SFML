@@ -140,7 +140,8 @@ void Board::draw_horizontal_win_line(sf::RenderWindow& window, const int& player
 	sf::RectangleShape win_line(sf::Vector2f(WIDTH - SQUARE_SIZE / 2, BOARD_LINE_WIDTH));
 
 	float y = (float)(row * SQUARE_SIZE + SQUARE_SIZE / 2);
-	win_line.setPosition(sf::Vector2f(y - WIN_LINES_EXPAND, y));
+	float x = SQUARE_SIZE / 2;
+	win_line.setPosition(sf::Vector2f(x - WIN_LINES_EXPAND, y));
 	win_line.setOrigin(sf::Vector2f(BOARD_LINE_WIDTH / 2, BOARD_LINE_WIDTH / 2));
 
 	if (player == X)

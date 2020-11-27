@@ -29,6 +29,9 @@ int main()
 				int row = (int)(pos.y / SQUARE_SIZE);
 				int col = (int)(pos.x / SQUARE_SIZE);
 
+				if (row > 2)row = 2;
+				if (col > 2)col = 2;
+
 				if (player == X)
 				{
 					if (board->set_X(row, col)) { player = O; }
